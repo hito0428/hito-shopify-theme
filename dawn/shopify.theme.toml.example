@@ -1,0 +1,4 @@
+[environments.development]
+store = "your-store.myshopify.com"
+password = "your-theme-access-token"
+theme = "your-theme-id"
