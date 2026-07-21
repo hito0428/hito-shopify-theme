@@ -1,90 +1,90 @@
 # AGENTS.md
 
-🚨 MANDATORY: YOU MUST CALL "learn_shopify_api" ONCE WHEN WORKING WITH LIQUID THEMES.
+🚨 强制要求：在处理 Liquid 主题时，您必须调用一次 "learn_shopify_api"。
 
-## Theme Architecture
+## 主题架构
 
-**Key principles: focus on generating snippets, blocks, and sections; users may create templates using the theme editor**
+**核心原则：专注于生成 snippets、blocks 和 sections；用户可以使用主题编辑器创建模板**
 
-### Directory structure
+### 目录结构
 
 ```
 .
-├── assets          # Stores static assets (CSS, JS, images, fonts, etc.)
-├── blocks          # Reusable, nestable, customizable components
-├── config          # Global theme settings and customization options
-├── layout          # Top-level wrappers for pages (layout templates)
-├── locales         # Translation files for theme internationalization
-├── sections        # Modular full-width page components
-├── snippets        # Reusable Liquid code or HTML fragments
-└── templates       # Templates combining sections and blocks to define page structures
+├── assets          # 存储静态资源（CSS、JS、图片、字体等）
+├── blocks          # 可复用、可嵌套、可自定义的组件
+├── config          # 全局主题设置和自定义选项
+├── layout          # 页面的顶层包装器（布局模板）
+├── locales         # 主题国际化的翻译文件
+├── sections        # 模块化的全宽页面组件
+├── snippets        # 可复用的 Liquid 代码或 HTML 片段
+└── templates       # 组合 sections 和 blocks 以定义页面结构的模板
 ```
 
 #### `sections`
 
-- Sections are `.liquid` files that allow you to create reusable modules that can be customized by merchants
-- Sections can include blocks which allow merchants to add, remove, and reorder content within a section
-- Sections are made customizable by including the required `{% schema %}` tag that exposes settings in the theme editor via a JSON object. Validate that JSON object using the `schemas/section.json` JSON schema
-- Examples of sections: hero banners, product grids, testimonials, featured collections
+- Sections 是 `.liquid` 文件，允许您创建可被商家自定义的可复用模块
+- Sections 可以包含 blocks，允许商家在 section 内添加、删除和重新排序内容
+- Sections 通过包含必需的 `{% schema %}` 标签来实现可定制，该标签通过 JSON 对象在主题编辑器中暴露设置。使用 `schemas/section.json` JSON 模式验证该 JSON 对象
+- Sections 示例：英雄横幅、产品网格、客户评价、精选合集
 
 #### `blocks`
 
-- Blocks are `.liquid` files that allow you to create reusable small components that can be customized by merchants (they don't need to fit the full-width of the page)
-- Blocks are ideal for logic that needs to be reused and also edited in the theme editor by merchants
-- Blocks can include other nested blocks which allow merchants to add, remove, and reorder content within a block too
-- Blocks are made customizable by including the required `{% schema %}` tag that exposes settings in the theme editor via a JSON object. Validate that JSON object using the `schemas/theme_block.json` JSON schema
-- Blocks must have the `{% doc %}` tag as the header if you directly/staticly render them in other file via `{% content_for 'block', id: '42', type: 'block_name' %}`
-- Examples of blocks: individual testimonials, slides in a carousel, feature items
+- Blocks 是 `.liquid` 文件，允许您创建可被商家自定义的可复用小组件（它们不需要适应页面的全宽）
+- Blocks 非常适合需要复用且需要商家在主题编辑器中编辑的逻辑
+- Blocks 可以包含其他嵌套的 blocks，允许商家在 block 内添加、删除和重新排序内容
+- Blocks 通过包含必需的 `{% schema %}` 标签来实现可定制，该标签通过 JSON 对象在主题编辑器中暴露设置。使用 `schemas/theme_block.json` JSON 模式验证该 JSON 对象
+- 如果您通过 `{% content_for 'block', id: '42', type: 'block_name' %}` 在其他文件中直接/静态地渲染 blocks，则 blocks 必须将 `{% doc %}` 标签作为头部
+- Blocks 示例：单个客户评价、轮播图中的幻灯片、功能项
 
 #### `snippets`
 
-- Snippets are reusable code fragments rendered in blocks, sections, and layouts files via the `render` tag
-- Snippets are ideal for logic that needs to be reused but not directly edited in the theme editor by merchants
-- Snippets accept parameters when rendered for dynamic behavior
-- Snippets must have the `{% doc %}` tag as the header
-- Examples of sections: buttons, meta-tags, css-variables, and form elements
+- Snippets 是可复用的代码片段，通过 `render` 标签在 blocks、sections 和 layout 文件中渲染
+- Snippets 非常适合需要复用但商家不直接在主题编辑器中编辑的逻辑
+- Snippets 在渲染时接受参数以实现动态行为
+- Snippets 必须将 `{% doc %}` 标签作为头部
+- Snippets 示例：按钮、元标签、CSS 变量和表单元素
 
 #### `layout`
 
-- Defines the overall HTML structure of the site, including `<head>` and `<body>`, and wraps other templates to provide a consistent frame
-- Contains repeated global elements like navigation, cart drawer, footer, and usually includes CSS/JS assets and meta tags
-- Must include `{{ content_for_header }}` to inject Shopify scripts in the `<head>` and `{{ content_for_layout }}` to render the page content
+- 定义站点的整体 HTML 结构，包括 `<head>` 和 `<body>`，并包装其他模板以提供一致的框架
+- 包含重复的全局元素，如导航、购物车抽屉、页脚，通常包括 CSS/JS 资源和元标签
+- 必须包含 `{{ content_for_header }}` 以在 `<head>` 中注入 Shopify 脚本，以及 `{{ content_for_layout }}` 以渲染页面内容
 
 #### `config`
 
-- `config/settings_schema.json` is a JSON file that defines schema for global theme settings. Validate the shape shape of this JSON file using the `schemas/theme_settings.json` JSON schema
-- `config/settings_data.json` is JSON file that holds the data for the settings defined by `config/settings_schema.json`
+- `config/settings_schema.json` 是一个 JSON 文件，定义全局主题设置的模式。使用 `schemas/theme_settings.json` JSON 模式验证此 JSON 文件的结构
+- `config/settings_data.json` 是 JSON 文件，保存 `config/settings_schema.json` 中定义的设置的数据
 
 #### `assets`
 
-- Contains static files like CSS, JavaScript, and images—including compiled and optimized assets—referenced in templates via the `asset_url` filter
-- Keep it here only `critical.css` and static files necessary for every page, otherwise prefer the usage of the `{% stylesheet %}` and `{% javascript %}` tags
+- 包含静态文件，如 CSS、JavaScript 和图片——包括编译和优化后的资源——通过 `asset_url` 过滤器在模板中引用
+- 只在这里存放 `critical.css` 和每个页面都必需的静态文件，否则优先使用 `{% stylesheet %}` 和 `{% javascript %}` 标签
 
 #### `locales`
 
-- Stores translation files organized by language code (e.g., `en.default.json`, `fr.json`) to localize all user-facing theme content and editor strings
-- Enables multi-language support by providing translations accessible via filters like `{{ 'key' | t }}` in Liquid for proper internationalization
-- Validate `locales` JSON files using the `schemas/translations.json` JSON schema
+- 存储按语言代码组织的翻译文件（例如，`en.default.json`、`fr.json`），以本地化所有面向用户的主题内容和编辑器字符串
+- 通过在 Liquid 中提供可通过 `{{ 'key' | t }}` 等过滤器访问的翻译来启用多语言支持，以实现正确的国际化
+- 使用 `schemas/translations.json` JSON 模式验证 `locales` JSON 文件
 
 #### `templates`
 
-- JSON file that define the structure, ordering, and which sections and blocks appear on each page type, allowing merchants to customize layouts without code changes
+- JSON 文件，定义结构、顺序以及哪些 sections 和 blocks 出现在每种页面类型上，允许商家无需修改代码即可自定义布局
 
 ### CSS & JavaScript
 
-- Write CSS and JavaScript per components using the `{% stylesheet %}` and `{% javascript %}` tags
-- Note: `{% stylesheet %}` and `{% javascript %}` are only supported in `snippets/`, `blocks/`, and `sections/`
+- 使用 `{% stylesheet %}` 和 `{% javascript %}` 标签按组件编写 CSS 和 JavaScript
+- 注意：`{% stylesheet %}` 和 `{% javascript %}` 仅在 `snippets/`、`blocks/` 和 `sections/` 中受支持
 
 ### LiquidDoc
 
-Snippets and blocks (when blocks are statically rendered) must include the LiquidDoc header that documents the purpose of the file and required parameters. Example:
+Snippets 和 blocks（当 blocks 被静态渲染时）必须包含 LiquidDoc 头部，用于记录文件的用途和所需参数。示例：
 
 ```liquid
 {% doc %}
-  Renders a responsive image that might be wrapped in a link.
+  渲染一个可能被链接包裹的响应式图片。
 
-  @param {image} image - The image to be rendered
-  @param {string} [url] - An optional destination URL for the image
+  @param {image} image - 要渲染的图片
+  @param {string} [url] - 图片的可选目标 URL
 
   @example
   {% render 'image', image: product.featured_image %}
@@ -93,18 +93,18 @@ Snippets and blocks (when blocks are statically rendered) must include the Liqui
 <a href="{{ url | default: '#' }}">{{ image | image_url: width: 200, height: 200 | image_tag }}</a>
 ```
 
-## The `{% schema %}` tag on blocks and sections
+## blocks 和 sections 上的 `{% schema %}` 标签
 
-**Key principles: follow the "Good practices" and "Validate the `{% schema %}` content" using JSON schemas**
+**核心原则：遵循"最佳实践"并使用 JSON 模式验证 `{% schema %}` 内容**
 
-### Good practices
+### 最佳实践
 
-When defining the `{% schema %}` tag on sections and blocks, follow these guidelines to use the values:
+在 sections 和 blocks 上定义 `{% schema %}` 标签时，请遵循以下指南来使用这些值：
 
-**Single property settings**: For settings that correspond to a single CSS property, use CSS variables:
+**单属性设置**：对于对应单个 CSS 属性的设置，请使用 CSS 变量：
 ```liquid
 <div class="collection" style="--gap: {{ block.settings.gap }}px">
-  Example
+  示例
 </div>
 
 {% stylesheet %}
@@ -128,18 +128,18 @@ When defining the `{% schema %}` tag on sections and blocks, follow these guidel
 {% endschema %}
 ```
 
-**Multiple property settings**: For settings that control multiple CSS properties, use CSS classes:
+**多属性设置**：对于控制多个 CSS 属性的设置，请使用 CSS 类：
 ```liquid
 <div class="collection {{ block.settings.layout }}">
-  Example
+  示例
 </div>
 
 {% stylesheet %}
   .collection--full-width {
-    /* multiple styles */
+    /* 多个样式 */
   }
   .collection--narrow {
-    /* multiple styles */
+    /* 多个样式 */
   }
 {% endstylesheet %}
 
@@ -158,16 +158,16 @@ When defining the `{% schema %}` tag on sections and blocks, follow these guidel
 {% endschema %}
 ```
 
-#### Mobile layouts
+#### 移动端布局
 
-If you need to create a mobile layout and you want the merchant to be able to select one or two columns, use a select input:
+如果您需要创建移动端布局，并且希望商家能够选择一列或两列，请使用选择输入：
 
 ```liquid
 {% schema %}
 {
   "type": "select",
   "id": "columns_mobile",
-  "label": "Columns on mobile",
+  "label": "移动端列数",
   "options": [
     { "value": 1, "label": "1" },
     { "value": "2", "label": "2" }
@@ -178,23 +178,23 @@ If you need to create a mobile layout and you want the merchant to be able to se
 
 ## Liquid
 
-### Liquid delimiters
+### Liquid 分隔符
 
-- **`{{ ... }}`**: Output – prints a value.
-- **`{{- ... -}}`**: Output, trims whitespace around the value.
-- **`{% ... %}`**: Logic/control tag (if, for, assign, etc.), does not print anything, no whitespace trim.
-- **`{%- ... -%}`**: Logic/control tag, trims whitespace around the tag.
+- **`{{ ... }}`**：输出 – 打印一个值。
+- **`{{- ... -}}`**：输出，修剪值周围的空白。
+- **`{% ... %}`**：逻辑/控制标签（if、for、assign 等），不打印任何内容，不修剪空白。
+- **`{%- ... -%}`**：逻辑/控制标签，修剪标签周围的空白。
 
-**Tip:**
-Adding a dash (`-`) after `{%`/`{{` or before `%}`/`}}` trims spaces or newlines next to the tag.
+**提示：**
+在 `{%`/`{{` 之后或 `%}`/`}}` 之前添加破折号（`-`）会修剪标签旁边的空格或换行符。
 
-**Examples:**
-- `{{- product.title -}}` → print value, remove surrounding spaces or lines.
-- `{%- if available -%}In stock{%- endif -%}` → logic, removes extra spaces/lines.
+**示例：**
+- `{{- product.title -}}` → 打印值，移除周围的空格或换行。
+- `{%- if available -%}有库存{%- endif -%}` → 逻辑，移除额外的空格/换行。
 
-### Liquid operators
+### Liquid 运算符
 
-**Comparison operators:**
+**比较运算符：**
 - ==
 - !=
 - >
@@ -202,38 +202,38 @@ Adding a dash (`-`) after `{%`/`{{` or before `%}`/`}}` trims spaces or newlines
 - >=
 - <=
 
-**Logical operators:**
+**逻辑运算符：**
 - `or`
 - `and`
-- `contains` - checks if a string contains a substring, or if an array contains a string
+- `contains` - 检查字符串是否包含子字符串，或数组是否包含字符串
 
-#### Comparison and comparison tags
+#### 比较和比较标签
 
-**Key condition principles:**
-- For simplificity, ALWAYS use nested `if` conditions when the logic requires more than one logical operator
-- Parentheses are not supported in Liquid
-- Ternary conditionals are not supported in Liquid, so always use `{% if cond %}`
+**关键条件原则：**
+- 为简单起见，当逻辑需要多个逻辑运算符时，始终使用嵌套的 `if` 条件
+- Liquid 不支持括号
+- Liquid 不支持三元条件，所以始终使用 `{% if cond %}`
 
-**Basic comparison example:**
+**基本比较示例：**
 ```liquid
 {% if product.title == "Awesome Shoes" %}
-  These shoes are awesome!
+  这双鞋太棒了！
 {% endif %}
 ```
 
-**Multiple Conditions:**
+**多个条件：**
 ```liquid
 {% if product.type == "Shirt" or product.type == "Shoes" %}
-  This is a shirt or a pair of shoes.
+  这是一件衬衫或一双鞋。
 {% endif %}
 ```
 
-**Contains Usage:**
-- For strings: `{% if product.title contains "Pack" %}`
-- For arrays: `{% if product.tags contains "Hello" %}`
-- Note: `contains` only works with strings, not objects in arrays
+**contains 用法：**
+- 对于字符串：`{% if product.title contains "Pack" %}`
+- 对于数组：`{% if product.tags contains "Hello" %}`
+- 注意：`contains` 仅适用于字符串，不适用于数组中的对象
 
-**{% elsif %} (used inside if/unless only)**
+**{% elsif %}（仅在 if/unless 内部使用）**
 ```liquid
 {% if a %}
   ...
@@ -257,257 +257,257 @@ Adding a dash (`-`) after `{%`/`{{` or before `%}`/`}}` trims spaces or newlines
   {% when 'b' %}
     b
   {% else %}
-    other
+    其他
 {% endcase %}
 ```
 
-**{% else %} (used inside if, unless, case, or for)**
+**{% else %}（在 if、unless、case 或 for 内部使用）**
 ```liquid
 {% if product.available %}
-  In stock
+  有库存
 {% else %}
-  Sold out
+  已售罄
 {% endif %}
 ```
-_or inside a for loop:_
+_或在 for 循环内：_
 ```liquid
 {% for item in collection.products %}
   {{ item.title }}
 {% else %}
-  No products found.
+  未找到产品。
 {% endfor %}
 ```
 
-#### Variables and variable tags
+#### 变量和变量标签
 
 ```liquid
 {% assign my_variable = 'value' %}
 
 {% capture my_variable %}
-  Contents of variable
+  变量内容
 {% endcapture %}
 
 {% increment counter %}
 {% decrement counter %}
 ```
 
-### Liquid filters
+### Liquid 过滤器
 
-You can chain filters in Liquid, passing the result of one filter as the input to the next.
+您可以在 Liquid 中链接过滤器，将一个过滤器的结果作为下一个过滤器的输入。
 
-See these filters:
+请参阅这些过滤器：
 
-- `upcase`: `{{ string | upcase }}` returns a **string**
-- `split`: `{{ string | split: string }}` returns an **array** (as we may notice in the docs, `split` receives a string as its argument)
-- `last`: `{{ array | last }}` returns **untyped**
+- `upcase`：`{{ string | upcase }}` 返回一个 **字符串**
+- `split`：`{{ string | split: string }}` 返回一个 **数组**（正如我们在文档中注意到的，`split` 接收一个字符串作为其参数）
+- `last`：`{{ array | last }}` 返回 **无类型**
 
-Each filter can pass its return value to the next filter as long as the types match.
+只要类型匹配，每个过滤器都可以将其返回值传递给下一个过滤器。
 
-For example, `upcase` returns a string, which is suitable input for `split`, which then produces an array for `last` to use.
+例如，`upcase` 返回一个字符串，这是 `split` 的合适输入，然后 `split` 产生一个数组供 `last` 使用。
 
-Here's how the filters are executed step by step to eventually return `"WORLD"`:
+以下是过滤器如何逐步执行以最终返回 `"WORLD"` 的方式：
 
 ```liquid
 {{ "hello world" | upcase | split: " " | last }}
 ```
 
-- First, `"hello world"` is converted to uppercase: `"HELLO WORLD"`, which is a string
-- Next, `split` can act on strings, so it splits the value by space into an array: `["HELLO", "WORLD"]`
-- Finally, the `last` filter work with array, so `"WORLD"` is returned
+- 首先，`"hello world"` 被转换为大写：`"HELLO WORLD"`，这是一个字符串
+- 接下来，`split` 可以作用于字符串，所以它按空格将值拆分为数组：`["HELLO", "WORLD"]`
+- 最后，`last` 过滤器处理数组，所以返回 `"WORLD"`
 
-#### Array
-- `compact`: `{{ array | compact }}` returns `array`
-- `concat`: `{{ array | concat: array }}` returns `array`
-- `find`: `{{ array | find: string, string }}` returns `untyped`
-- `find_index`: `{{ array | find_index: string, string }}` returns `number`
-- `first`: `{{ array | first }}` returns `untyped`
-- `has`: `{{ array | has: string, string }}` returns `boolean`
-- `join`: `{{ array | join }}` returns `string`
-- `last`: `{{ array | last }}` returns `untyped`
-- `map`: `{{ array | map: string }}` returns `array`
-- `reject`: `{{ array | reject: string, string }}` returns `array`
-- `reverse`: `{{ array | reverse }}` returns `array`
-- `size`: `{{ variable | size }}` returns `number`
-- `sort`: `{{ array | sort }}` returns `array`
-- `sort_natural`: `{{ array | sort_natural }}` returns `array`
-- `sum`: `{{ array | sum }}` returns `number`
-- `uniq`: `{{ array | uniq }}` returns `array`
-- `where`: `{{ array | where: string, string }}` returns `array`
+#### 数组
+- `compact`：`{{ array | compact }}` 返回 `array`
+- `concat`：`{{ array | concat: array }}` 返回 `array`
+- `find`：`{{ array | find: string, string }}` 返回 `untyped`
+- `find_index`：`{{ array | find_index: string, string }}` 返回 `number`
+- `first`：`{{ array | first }}` 返回 `untyped`
+- `has`：`{{ array | has: string, string }}` 返回 `boolean`
+- `join`：`{{ array | join }}` 返回 `string`
+- `last`：`{{ array | last }}` 返回 `untyped`
+- `map`：`{{ array | map: string }}` 返回 `array`
+- `reject`：`{{ array | reject: string, string }}` 返回 `array`
+- `reverse`：`{{ array | reverse }}` 返回 `array`
+- `size`：`{{ variable | size }}` 返回 `number`
+- `sort`：`{{ array | sort }}` 返回 `array`
+- `sort_natural`：`{{ array | sort_natural }}` 返回 `array`
+- `sum`：`{{ array | sum }}` 返回 `number`
+- `uniq`：`{{ array | uniq }}` 返回 `array`
+- `where`：`{{ array | where: string, string }}` 返回 `array`
 
-#### Cart
-- `item_count_for_variant`: `{{ cart | item_count_for_variant: {variant_id} }}` returns `number`
-- `line_items_for`: `{{ cart | line_items_for: object }}` returns `array`
+#### 购物车
+- `item_count_for_variant`：`{{ cart | item_count_for_variant: {variant_id} }}` 返回 `number`
+- `line_items_for`：`{{ cart | line_items_for: object }}` 返回 `array`
 
-#### Collection
-- `link_to_type`: `{{ string | link_to_type }}` returns `string`
-- `link_to_vendor`: `{{ string | link_to_vendor }}` returns `string`
-- `sort_by`: `{{ string | sort_by: string }}` returns `string`
-- `url_for_type`: `{{ string | url_for_type }}` returns `string`
-- `url_for_vendor`: `{{ string | url_for_vendor }}` returns `string`
-- `within`: `{{ string | within: collection }}` returns `string`
-- `highlight_active_tag`: `{{ string | highlight_active_tag }}` returns `string`
+#### 合集
+- `link_to_type`：`{{ string | link_to_type }}` 返回 `string`
+- `link_to_vendor`：`{{ string | link_to_vendor }}` 返回 `string`
+- `sort_by`：`{{ string | sort_by: string }}` 返回 `string`
+- `url_for_type`：`{{ string | url_for_type }}` 返回 `string`
+- `url_for_vendor`：`{{ string | url_for_vendor }}` 返回 `string`
+- `within`：`{{ string | within: collection }}` 返回 `string`
+- `highlight_active_tag`：`{{ string | highlight_active_tag }}` 返回 `string`
 
-#### Color
-- `brightness_difference`: `{{ string | brightness_difference: string }}` returns `number`
-- `color_brightness`: `{{ string | color_brightness }}` returns `number`
-- `color_contrast`: `{{ string | color_contrast: string }}` returns `number`
-- `color_darken`: `{{ string | color_darken: number }}` returns `string`
-- `color_desaturate`: `{{ string | color_desaturate: number }}` returns `string`
-- `color_difference`: `{{ string | color_difference: string }}` returns `number`
-- `color_extract`: `{{ string | color_extract: string }}` returns `number`
-- `color_lighten`: `{{ string | color_lighten: number }}` returns `string`
-- `color_mix`: `{{ string | color_mix: string, number }}` returns `string`
-- `color_modify`: `{{ string | color_modify: string, number }}` returns `string`
-- `color_saturate`: `{{ string | color_saturate: number }}` returns `string`
-- `color_to_hex`: `{{ string | color_to_hex }}` returns `string`
-- `color_to_hsl`: `{{ string | color_to_hsl }}` returns `string`
-- `color_to_oklch`: `{{ string | color_to_oklch }}` returns `string`
-- `color_to_rgb`: `{{ string | color_to_rgb }}` returns `string`
-- `hex_to_rgba`: `{{ string | hex_to_rgba }}` returns `string`
+#### 颜色
+- `brightness_difference`：`{{ string | brightness_difference: string }}` 返回 `number`
+- `color_brightness`：`{{ string | color_brightness }}` 返回 `number`
+- `color_contrast`：`{{ string | color_contrast: string }}` 返回 `number`
+- `color_darken`：`{{ string | color_darken: number }}` 返回 `string`
+- `color_desaturate`：`{{ string | color_desaturate: number }}` 返回 `string`
+- `color_difference`：`{{ string | color_difference: string }}` 返回 `number`
+- `color_extract`：`{{ string | color_extract: string }}` 返回 `number`
+- `color_lighten`：`{{ string | color_lighten: number }}` 返回 `string`
+- `color_mix`：`{{ string | color_mix: string, number }}` 返回 `string`
+- `color_modify`：`{{ string | color_modify: string, number }}` 返回 `string`
+- `color_saturate`：`{{ string | color_saturate: number }}` 返回 `string`
+- `color_to_hex`：`{{ string | color_to_hex }}` 返回 `string`
+- `color_to_hsl`：`{{ string | color_to_hsl }}` 返回 `string`
+- `color_to_oklch`：`{{ string | color_to_oklch }}` 返回 `string`
+- `color_to_rgb`：`{{ string | color_to_rgb }}` 返回 `string`
+- `hex_to_rgba`：`{{ string | hex_to_rgba }}` 返回 `string`
 
-#### Customer
-- `customer_login_link`: `{{ string | customer_login_link }}` returns `string`
-- `customer_logout_link`: `{{ string | customer_logout_link }}` returns `string`
-- `customer_register_link`: `{{ string | customer_register_link }}` returns `string`
-- `avatar`: `{{ customer | avatar }}` returns `string`
-- `login_button`: `{{ shop | login_button }}` returns `string`
+#### 客户
+- `customer_login_link`：`{{ string | customer_login_link }}` 返回 `string`
+- `customer_logout_link`：`{{ string | customer_logout_link }}` 返回 `string`
+- `customer_register_link`：`{{ string | customer_register_link }}` 返回 `string`
+- `avatar`：`{{ customer | avatar }}` 返回 `string`
+- `login_button`：`{{ shop | login_button }}` 返回 `string`
 
-#### Date
-- `date`: `{{ date | date: string }}` returns `string`
+#### 日期
+- `date`：`{{ date | date: string }}` 返回 `string`
 
-#### Default
-- `default_errors`: `{{ string | default_errors }}` returns `string`
-- `default`: `{{ variable | default: variable }}` returns `untyped`
-- `default_pagination`: `{{ paginate | default_pagination }}` returns `string`
+#### 默认
+- `default_errors`：`{{ string | default_errors }}` 返回 `string`
+- `default`：`{{ variable | default: variable }}` 返回 `untyped`
+- `default_pagination`：`{{ paginate | default_pagination }}` 返回 `string`
 
-#### Font
-- `font_face`: `{{ font | font_face }}` returns `string`
-- `font_modify`: `{{ font | font_modify: string, string }}` returns `font`
-- `font_url`: `{{ font | font_url }}` returns `string`
+#### 字体
+- `font_face`：`{{ font | font_face }}` 返回 `string`
+- `font_modify`：`{{ font | font_modify: string, string }}` 返回 `font`
+- `font_url`：`{{ font | font_url }}` 返回 `string`
 
-#### Format
-- `date`: `{{ string | date: string }}` returns `string`
-- `json`: `{{ variable | json }}` returns `string`
-- `structured_data`: `{{ variable | structured_data }}` returns `string`
-- `unit_price_with_measurement`: `{{ number | unit_price_with_measurement: unit_price_measurement }}` returns `string`
-- `weight_with_unit`: `{{ number | weight_with_unit }}` returns `string`
+#### 格式
+- `date`：`{{ string | date: string }}` 返回 `string`
+- `json`：`{{ variable | json }}` 返回 `string`
+- `structured_data`：`{{ variable | structured_data }}` 返回 `string`
+- `unit_price_with_measurement`：`{{ number | unit_price_with_measurement: unit_price_measurement }}` 返回 `string`
+- `weight_with_unit`：`{{ number | weight_with_unit }}` 返回 `string`
 
-#### Hosted_file
-- `asset_img_url`: `{{ string | asset_img_url }}` returns `string`
-- `asset_url`: `{{ string | asset_url }}` returns `string`
-- `file_img_url`: `{{ string | file_img_url }}` returns `string`
-- `file_url`: `{{ string | file_url }}` returns `string`
-- `global_asset_url`: `{{ string | global_asset_url }}` returns `string`
-- `shopify_asset_url`: `{{ string | shopify_asset_url }}` returns `string`
+#### 托管文件
+- `asset_img_url`：`{{ string | asset_img_url }}` 返回 `string`
+- `asset_url`：`{{ string | asset_url }}` 返回 `string`
+- `file_img_url`：`{{ string | file_img_url }}` 返回 `string`
+- `file_url`：`{{ string | file_url }}` 返回 `string`
+- `global_asset_url`：`{{ string | global_asset_url }}` 返回 `string`
+- `shopify_asset_url`：`{{ string | shopify_asset_url }}` 返回 `string`
 
 #### Html
-- `time_tag`: `{{ string | time_tag: string }}` returns `string`
-- `inline_asset_content`: `{{ asset_name | inline_asset_content }}` returns `string`
-- `highlight`: `{{ string | highlight: string }}` returns `string`
-- `link_to`: `{{ string | link_to: string }}` returns `string`
-- `placeholder_svg_tag`: `{{ string | placeholder_svg_tag }}` returns `string`
-- `preload_tag`: `{{ string | preload_tag: as: string }}` returns `string`
-- `script_tag`: `{{ string | script_tag }}` returns `string`
-- `stylesheet_tag`: `{{ string | stylesheet_tag }}` returns `string`
+- `time_tag`：`{{ string | time_tag: string }}` 返回 `string`
+- `inline_asset_content`：`{{ asset_name | inline_asset_content }}` 返回 `string`
+- `highlight`：`{{ string | highlight: string }}` 返回 `string`
+- `link_to`：`{{ string | link_to: string }}` 返回 `string`
+- `placeholder_svg_tag`：`{{ string | placeholder_svg_tag }}` 返回 `string`
+- `preload_tag`：`{{ string | preload_tag: as: string }}` 返回 `string`
+- `script_tag`：`{{ string | script_tag }}` 返回 `string`
+- `stylesheet_tag`：`{{ string | stylesheet_tag }}` 返回 `string`
 
-#### Localization
-- `currency_selector`: `{{ form | currency_selector }}` returns `string`
-- `translate`: `{{ string | t }}` returns `string`
-- `format_address`: `{{ address | format_address }}` returns `string`
+#### 本地化
+- `currency_selector`：`{{ form | currency_selector }}` 返回 `string`
+- `translate`：`{{ string | t }}` 返回 `string`
+- `format_address`：`{{ address | format_address }}` 返回 `string`
 
-#### Math
-- `abs`: `{{ number | abs }}` returns `number`
-- `at_least`: `{{ number | at_least }}` returns `number`
-- `at_most`: `{{ number | at_most }}` returns `number`
-- `ceil`: `{{ number | ceil }}` returns `number`
-- `divided_by`: `{{ number | divided_by: number }}` returns `number`
-- `floor`: `{{ number | floor }}` returns `number`
-- `minus`: `{{ number | minus: number }}` returns `number`
-- `modulo`: `{{ number | modulo: number }}` returns `number`
-- `plus`: `{{ number | plus: number }}` returns `number`
-- `round`: `{{ number | round }}` returns `number`
-- `times`: `{{ number | times: number }}` returns `number`
+#### 数学
+- `abs`：`{{ number | abs }}` 返回 `number`
+- `at_least`：`{{ number | at_least }}` 返回 `number`
+- `at_most`：`{{ number | at_most }}` 返回 `number`
+- `ceil`：`{{ number | ceil }}` 返回 `number`
+- `divided_by`：`{{ number | divided_by: number }}` 返回 `number`
+- `floor`：`{{ number | floor }}` 返回 `number`
+- `minus`：`{{ number | minus: number }}` 返回 `number`
+- `modulo`：`{{ number | modulo: number }}` 返回 `number`
+- `plus`：`{{ number | plus: number }}` 返回 `number`
+- `round`：`{{ number | round }}` 返回 `number`
+- `times`：`{{ number | times: number }}` 返回 `number`
 
-#### Media
-- `external_video_tag`: `{{ variable | external_video_tag }}` returns `string`
-- `external_video_url`: `{{ media | external_video_url: attribute: string }}` returns `string`
-- `image_tag`: `{{ string | image_tag }}` returns `string`
-- `media_tag`: `{{ media | media_tag }}` returns `string`
-- `model_viewer_tag`: `{{ media | model_viewer_tag }}` returns `string`
-- `video_tag`: `{{ media | video_tag }}` returns `string`
-- `article_img_url`: `{{ variable | article_img_url }}` returns `string`
-- `collection_img_url`: `{{ variable | collection_img_url }}` returns `string`
-- `image_url`: `{{ variable | image_url: width: number, height: number }}` returns `string`
-- `img_tag`: `{{ string | img_tag }}` returns `string`
-- `img_url`: `{{ variable | img_url }}` returns `string`
-- `product_img_url`: `{{ variable | product_img_url }}` returns `string`
+#### 媒体
+- `external_video_tag`：`{{ variable | external_video_tag }}` 返回 `string`
+- `external_video_url`：`{{ media | external_video_url: attribute: string }}` 返回 `string`
+- `image_tag`：`{{ string | image_tag }}` 返回 `string`
+- `media_tag`：`{{ media | media_tag }}` 返回 `string`
+- `model_viewer_tag`：`{{ media | model_viewer_tag }}` 返回 `string`
+- `video_tag`：`{{ media | video_tag }}` 返回 `string`
+- `article_img_url`：`{{ variable | article_img_url }}` 返回 `string`
+- `collection_img_url`：`{{ variable | collection_img_url }}` 返回 `string`
+- `image_url`：`{{ variable | image_url: width: number, height: number }}` 返回 `string`
+- `img_tag`：`{{ string | img_tag }}` 返回 `string`
+- `img_url`：`{{ variable | img_url }}` 返回 `string`
+- `product_img_url`：`{{ variable | product_img_url }}` 返回 `string`
 
-#### Metafield
-- `metafield_tag`: `{{ metafield | metafield_tag }}` returns `string`
-- `metafield_text`: `{{ metafield | metafield_text }}` returns `string`
+#### 元字段
+- `metafield_tag`：`{{ metafield | metafield_tag }}` 返回 `string`
+- `metafield_text`：`{{ metafield | metafield_text }}` 返回 `string`
 
-#### Money
-- `money`: `{{ number | money }}` returns `string`
-- `money_with_currency`: `{{ number | money_with_currency }}` returns `string`
-- `money_without_currency`: `{{ number | money_without_currency }}` returns `string`
-- `money_without_trailing_zeros`: `{{ number | money_without_trailing_zeros }}` returns `string`
+#### 货币
+- `money`：`{{ number | money }}` 返回 `string`
+- `money_with_currency`：`{{ number | money_with_currency }}` 返回 `string`
+- `money_without_currency`：`{{ number | money_without_currency }}` 返回 `string`
+- `money_without_trailing_zeros`：`{{ number | money_without_trailing_zeros }}` 返回 `string`
 
-#### Payment
-- `payment_button`: `{{ form | payment_button }}` returns `string`
-- `payment_terms`: `{{ form | payment_terms }}` returns `string`
-- `payment_type_img_url`: `{{ string | payment_type_img_url }}` returns `string`
-- `payment_type_svg_tag`: `{{ string | payment_type_svg_tag }}` returns `string`
+#### 支付
+- `payment_button`：`{{ form | payment_button }}` 返回 `string`
+- `payment_terms`：`{{ form | payment_terms }}` 返回 `string`
+- `payment_type_img_url`：`{{ string | payment_type_img_url }}` 返回 `string`
+- `payment_type_svg_tag`：`{{ string | payment_type_svg_tag }}` 返回 `string`
 
-#### String
-- `blake3`: `{{ string | blake3 }}` returns `string`
-- `hmac_sha1`: `{{ string | hmac_sha1: string }}` returns `string`
-- `hmac_sha256`: `{{ string | hmac_sha256: string }}` returns `string`
-- `md5`: `{{ string | md5 }}` returns `string`
-- `sha1`: `{{ string | sha1: string }}` returns `string`
-- `sha256`: `{{ string | sha256: string }}` returns `string`
-- `append`: `{{ string | append: string }}` returns `string`
-- `base64_decode`: `{{ string | base64_decode }}` returns `string`
-- `base64_encode`: `{{ string | base64_encode }}` returns `string`
-- `base64_url_safe_decode`: `{{ string | base64_url_safe_decode }}` returns `string`
-- `base64_url_safe_encode`: `{{ string | base64_url_safe_encode }}` returns `string`
-- `capitalize`: `{{ string | capitalize }}` returns `string`
-- `downcase`: `{{ string | downcase }}` returns `string`
-- `escape`: `{{ string | escape }}` returns `string`
-- `escape_once`: `{{ string | escape_once }}` returns `string`
-- `lstrip`: `{{ string | lstrip }}` returns `string`
-- `newline_to_br`: `{{ string | newline_to_br }}` returns `string`
-- `prepend`: `{{ string | prepend: string }}` returns `string`
-- `remove`: `{{ string | remove: string }}` returns `string`
-- `remove_first`: `{{ string | remove_first: string }}` returns `string`
-- `remove_last`: `{{ string | remove_last: string }}` returns `string`
-- `replace`: `{{ string | replace: string, string }}` returns `string`
-- `replace_first`: `{{ string | replace_first: string, string }}` returns `string`
-- `replace_last`: `{{ string | replace_last: string, string }}` returns `string`
-- `rstrip`: `{{ string | rstrip }}` returns `string`
-- `slice`: `{{ string | slice }}` returns `string`
-- `split`: `{{ string | split: string }}` returns `array`
-- `strip`: `{{ string | strip }}` returns `string`
-- `strip_html`: `{{ string | strip_html }}` returns `string`
-- `strip_newlines`: `{{ string | strip_newlines }}` returns `string`
-- `truncate`: `{{ string | truncate: number }}` returns `string`
-- `truncatewords`: `{{ string | truncatewords: number }}` returns `string`
-- `upcase`: `{{ string | upcase }}` returns `string`
-- `url_decode`: `{{ string | url_decode }}` returns `string`
-- `url_encode`: `{{ string | url_encode }}` returns `string`
-- `camelize`: `{{ string | camelize }}` returns `string`
-- `handleize`: `{{ string | handleize }}` returns `string`
-- `url_escape`: `{{ string | url_escape }}` returns `string`
-- `url_param_escape`: `{{ string | url_param_escape }}` returns `string`
-- `pluralize`: `{{ number | pluralize: string, string }}` returns `string`
+#### 字符串
+- `blake3`：`{{ string | blake3 }}` 返回 `string`
+- `hmac_sha1`：`{{ string | hmac_sha1: string }}` 返回 `string`
+- `hmac_sha256`：`{{ string | hmac_sha256: string }}` 返回 `string`
+- `md5`：`{{ string | md5 }}` 返回 `string`
+- `sha1`：`{{ string | sha1: string }}` 返回 `string`
+- `sha256`：`{{ string | sha256: string }}` 返回 `string`
+- `append`：`{{ string | append: string }}` 返回 `string`
+- `base64_decode`：`{{ string | base64_decode }}` 返回 `string`
+- `base64_encode`：`{{ string | base64_encode }}` 返回 `string`
+- `base64_url_safe_decode`：`{{ string | base64_url_safe_decode }}` 返回 `string`
+- `base64_url_safe_encode`：`{{ string | base64_url_safe_encode }}` 返回 `string`
+- `capitalize`：`{{ string | capitalize }}` 返回 `string`
+- `downcase`：`{{ string | downcase }}` 返回 `string`
+- `escape`：`{{ string | escape }}` 返回 `string`
+- `escape_once`：`{{ string | escape_once }}` 返回 `string`
+- `lstrip`：`{{ string | lstrip }}` 返回 `string`
+- `newline_to_br`：`{{ string | newline_to_br }}` 返回 `string`
+- `prepend`：`{{ string | prepend: string }}` 返回 `string`
+- `remove`：`{{ string | remove: string }}` 返回 `string`
+- `remove_first`：`{{ string | remove_first: string }}` 返回 `string`
+- `remove_last`：`{{ string | remove_last: string }}` 返回 `string`
+- `replace`：`{{ string | replace: string, string }}` 返回 `string`
+- `replace_first`：`{{ string | replace_first: string, string }}` 返回 `string`
+- `replace_last`：`{{ string | replace_last: string, string }}` 返回 `string`
+- `rstrip`：`{{ string | rstrip }}` 返回 `string`
+- `slice`：`{{ string | slice }}` 返回 `string`
+- `split`：`{{ string | split: string }}` 返回 `array`
+- `strip`：`{{ string | strip }}` 返回 `string`
+- `strip_html`：`{{ string | strip_html }}` 返回 `string`
+- `strip_newlines`：`{{ string | strip_newlines }}` 返回 `string`
+- `truncate`：`{{ string | truncate: number }}` 返回 `string`
+- `truncatewords`：`{{ string | truncatewords: number }}` 返回 `string`
+- `upcase`：`{{ string | upcase }}` 返回 `string`
+- `url_decode`：`{{ string | url_decode }}` 返回 `string`
+- `url_encode`：`{{ string | url_encode }}` 返回 `string`
+- `camelize`：`{{ string | camelize }}` 返回 `string`
+- `handleize`：`{{ string | handleize }}` 返回 `string`
+- `url_escape`：`{{ string | url_escape }}` 返回 `string`
+- `url_param_escape`：`{{ string | url_param_escape }}` 返回 `string`
+- `pluralize`：`{{ number | pluralize: string, string }}` 返回 `string`
 
-#### Tag
-- `link_to_add_tag`: `{{ string | link_to_add_tag }}` returns `string`
-- `link_to_remove_tag`: `{{ string | link_to_remove_tag }}` returns `string`
-- `link_to_tag`: `{{ string | link_to_tag }}` returns `string`
+#### 标签
+- `link_to_add_tag`：`{{ string | link_to_add_tag }}` 返回 `string`
+- `link_to_remove_tag`：`{{ string | link_to_remove_tag }}` 返回 `string`
+- `link_to_tag`：`{{ string | link_to_tag }}` 返回 `string`
 
-### Liquid objects
+### Liquid 对象
 
-#### Global objects
+#### 全局对象
 - `collections`
 - `pages`
 - `all_products`
@@ -542,69 +542,68 @@ Here's how the filters are executed step by step to eventually return `"WORLD"`:
 - `powered_by_link`
 - `scripts`
 
-#### `/article` page
+#### `/article` 页面
 - `article`
 - `blog`
 
-#### `/blog` page
+#### `/blog` 页面
 - `blog`
 - `current_tags`
 
-#### `/cart` page
+#### `/cart` 页面
 - `cart`
 
-#### `/checkout` page
+#### `/checkout` 页面
 - `checkout`
 
-#### `/collection` page
+#### `/collection` 页面
 - `collection`
 - `current_tags`
 
-#### `/customers/account` page
+#### `/customers/account` 页面
 - `customer`
 
-#### `/customers/addresses` page
+#### `/customers/addresses` 页面
 - `customer`
 
-#### `/customers/order` page
+#### `/customers/order` 页面
 - `customer`
 - `order`
 
-#### `/gift_card.liquid` page
+#### `/gift_card.liquid` 页面
 - `gift_card`
 - `recipient`
 
-#### `/metaobject` page
+#### `/metaobject` 页面
 - `metaobject`
 
-#### `/page` page
+#### `/page` 页面
 - `page`
 
-#### `/product` page
+#### `/product` 页面
 - `product`
 - `remote_product`
 
-#### `/robots.txt.liquid` page
+#### `/robots.txt.liquid` 页面
 - `robots`
 
-#### `/search` page
+#### `/search` 页面
 - `search`
-### Liquid tags
+### Liquid 标签
 
 
 #### content_for
-The `content_for` tag requires a type parameter to differentiate between rendering a number of theme blocks (`'blocks'`) and a single static block (`'block'`).
+`content_for` 标签需要一个 type 参数来区分渲染多个主题 blocks（`'blocks'`）和单个静态 block（`'block'`）。
 
 
-Syntax:
+语法：
 ```
 {% content_for 'blocks' %}
 {% content_for 'block', type: "slide", id: "slide-1" %}
 ```
 
 #### form
-Because there are many different form types available in Shopify themes, the `form` tag requires a type. Depending on the
-form type, an additional parameter might be required. You can specify the following form types:
+因为 Shopify 主题中有许多不同的表单类型可用，所以 `form` 标签需要一个类型。根据表单类型，可能需要额外的参数。您可以指定以下表单类型：
 
 - [`activate_customer_password`](https://shopify.dev/docs/api/liquid/tags/form#form-activate_customer_password)
 - [`cart`](https://shopify.dev/docs/api/liquid/tags/form#form-cart)
@@ -623,58 +622,58 @@ form type, an additional parameter might be required. You can specify the follow
 - [`storefront_password`](https://shopify.dev/docs/api/liquid/tags/form#form-storefront_password)
 
 
-Syntax:
+语法：
 ```
 {% form 'form_type' %}
-  content
+  内容
 {% endform %}
 ```
 
 #### layout
 
-Syntax:
+语法：
 ```
 {% layout name %}
 ```
 
 #### assign
-You can create variables of any [basic type](https://shopify.dev/docs/api/liquid/basics#types), [object](https://shopify.dev/docs/api/liquid/objects), or object property.
+您可以创建任何 [基本类型](https://shopify.dev/docs/api/liquid/basics#types)、[对象](https://shopify.dev/docs/api/liquid/objects) 或对象属性的变量。
 
-> Caution:
-> Predefined Liquid objects can be overridden by variables with the same name.
-> To make sure that you can access all Liquid objects, make sure that your variable name doesn't match a predefined object's name.
+> 注意：
+> 预定义的 Liquid 对象可能会被同名变量覆盖。
+> 为确保您可以访问所有 Liquid 对象，请确保您的变量名与预定义对象的名称不匹配。
 
 
-Syntax:
+语法：
 ```
 {% assign variable_name = value %}
 ```
 
 #### break
 
-Syntax:
+语法：
 ```
 {% break %}
 ```
 
 #### capture
-You can create complex strings with Liquid logic and variables.
+您可以使用 Liquid 逻辑和变量创建复杂的字符串。
 
-> Caution:
-> Predefined Liquid objects can be overridden by variables with the same name.
-> To make sure that you can access all Liquid objects, make sure that your variable name doesn't match a predefined object's name.
+> 注意：
+> 预定义的 Liquid 对象可能会被同名变量覆盖。
+> 为确保您可以访问所有 Liquid 对象，请确保您的变量名与预定义对象的名称不匹配。
 
 
-Syntax:
+语法：
 ```
 {% capture variable %}
-  value
+  值
 {% endcapture %}
 ```
 
 #### case
 
-Syntax:
+语法：
 ```
 {% case variable %}
   {% when first_value %}
@@ -687,68 +686,59 @@ Syntax:
 ```
 
 #### comment
-Any text inside `comment` tags won't be output, and any Liquid code will be parsed, but not executed.
+`comment` 标签内的任何文本都不会被输出，任何 Liquid 代码都会被解析但不会被执行。
 
 
-Syntax:
+语法：
 ```
 {% comment %}
-  content
+  内容
 {% endcomment %}
 ```
 
 #### continue
 
-Syntax:
+语法：
 ```
 {% continue %}
 ```
 
 #### cycle
-The `cycle` tag must be used inside a `for` loop.
+`cycle` 标签必须在 `for` 循环内使用。
 
-> Tip:
-> Use the `cycle` tag to output text in a predictable pattern. For example, to apply odd/even classes to rows in a table.
+> 提示：
+> 使用 `cycle` 标签以可预测的模式输出文本。例如，为表格中的行应用奇/偶类。
 
 
-Syntax:
+语法：
 ```
 {% cycle string, string, ... %}
 ```
 
 #### decrement
-Variables that are declared with `decrement` are unique to the [layout](/themes/architecture/layouts), [template](/themes/architecture/templates),
-or [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across
-[snippets](/themes/architecture/snippets) included in the file.
+使用 `decrement` 声明的变量对于创建它们的 [layout](/themes/architecture/layouts)、[template](/themes/architecture/templates) 或 [section](/themes/architecture/sections) 文件是唯一的。但是，该变量在文件中包含的 [snippets](/themes/architecture/snippets) 之间共享。
 
-Similarly, variables that are created with `decrement` are independent from those created with [`assign`](https://shopify.dev/docs/api/liquid/tags/assign)
-and [`capture`](https://shopify.dev/docs/api/liquid/tags/capture). However, `decrement` and [`increment`](https://shopify.dev/docs/api/liquid/tags/increment) share
-variables.
+同样，使用 `decrement` 创建的变量与使用 [`assign`](https://shopify.dev/docs/api/liquid/tags/assign) 和 [`capture`](https://shopify.dev/docs/api/liquid/tags/capture) 创建的变量是独立的。但是，`decrement` 和 [`increment`](https://shopify.dev/docs/api/liquid/tags/increment) 共享变量。
 
 
-Syntax:
+语法：
 ```
 {% decrement variable_name %}
 ```
 
 #### doc
-The `doc` tag allows developers to include documentation within Liquid
-templates. Any content inside `doc` tags is not rendered or outputted.
-Liquid code inside will be parsed but not executed. This facilitates
-tooling support for features like code completion, linting, and inline
-documentation.
+`doc` 标签允许开发人员在 Liquid 模板中包含文档。`doc` 标签内的任何内容都不会被渲染或输出。其中的 Liquid 代码将被解析但不会被执行。这有助于为代码补全、代码检查和内联文档等功能提供工具支持。
 
-For detailed documentation syntax and examples, see the
-[`LiquidDoc` reference](https://shopify.dev/docs/storefronts/themes/tools/liquid-doc).
+有关详细的文档语法和示例，请参阅 [`LiquidDoc` 参考](https://shopify.dev/docs/storefronts/themes/tools/liquid-doc)。
 
 
-Syntax:
+语法：
 ```
 {% doc %}
-  Renders a message.
+  渲染一条消息。
 
-  @param {string} foo - A string value.
-  @param {string} [bar] - An optional string value.
+  @param {string} foo - 一个字符串值。
+  @param {string} [bar] - 一个可选的字符串值。
 
   @example
   {% render 'message', foo: 'Hello', bar: 'World' %}
@@ -756,14 +746,13 @@ Syntax:
 ```
 
 #### echo
-Using the `echo` tag is the same as wrapping an expression in curly brackets (`{{` and `}}`). However, unlike the curly
-bracket method, you can use the `echo` tag inside [`liquid` tags](https://shopify.dev/docs/api/liquid/tags/liquid).
+使用 `echo` 标签与将表达式包装在花括号（`{{` 和 `}}`）中相同。但是，与花括号方法不同，您可以在 [`liquid` 标签](https://shopify.dev/docs/api/liquid/tags/liquid) 内使用 `echo` 标签。
 
-> Tip:
-> You can use [filters](https://shopify.dev/docs/api/liquid/filters) on expressions inside `echo` tags.
+> 提示：
+> 您可以在 `echo` 标签内对表达式使用 [过滤器](https://shopify.dev/docs/api/liquid/filters)。
 
 
-Syntax:
+语法：
 ```
 {% liquid
   echo expression
@@ -771,104 +760,92 @@ Syntax:
 ```
 
 #### for
-You can do a maximum of 50 iterations with a `for` loop. If you need to iterate over more than 50 items, then use the
-[`paginate` tag](https://shopify.dev/docs/api/liquid/tags/paginate) to split the items over multiple pages.
+使用 `for` 循环最多可以进行 50 次迭代。如果您需要迭代超过 50 个项目，则使用 [`paginate` 标签](https://shopify.dev/docs/api/liquid/tags/paginate) 将项目拆分到多个页面。
 
-> Tip:
-> Every `for` loop has an associated [`forloop` object](https://shopify.dev/docs/api/liquid/objects/forloop) with information about the loop.
+> 提示：
+> 每个 `for` 循环都有一个关联的 [`forloop` 对象](https://shopify.dev/docs/api/liquid/objects/forloop)，其中包含有关循环的信息。
 
 
-Syntax:
+语法：
 ```
 {% for variable in array %}
-  expression
+  表达式
 {% endfor %}
 ```
 
 #### if
 
-Syntax:
+语法：
 ```
 {% if condition %}
-  expression
+  表达式
 {% endif %}
 ```
 
 #### increment
-Variables that are declared with `increment` are unique to the [layout](/themes/architecture/layouts), [template](/themes/architecture/templates),
-or [section](/themes/architecture/sections) file that they're created in. However, the variable is shared across
-[snippets](/themes/architecture/snippets) included in the file.
+使用 `increment` 声明的变量对于创建它们的 [layout](/themes/architecture/layouts)、[template](/themes/architecture/templates) 或 [section](/themes/architecture/sections) 文件是唯一的。但是，该变量在文件中包含的 [snippets](/themes/architecture/snippets) 之间共享。
 
-Similarly, variables that are created with `increment` are independent from those created with [`assign`](https://shopify.dev/docs/api/liquid/tags/assign)
-and [`capture`](https://shopify.dev/docs/api/liquid/tags/capture). However, `increment` and [`decrement`](https://shopify.dev/docs/api/liquid/tags/decrement) share
-variables.
+同样，使用 `increment` 创建的变量与使用 [`assign`](https://shopify.dev/docs/api/liquid/tags/assign) 和 [`capture`](https://shopify.dev/docs/api/liquid/tags/capture) 创建的变量是独立的。但是，`increment` 和 [`decrement`](https://shopify.dev/docs/api/liquid/tags/decrement) 共享变量。
 
 
-Syntax:
+语法：
 ```
 {% increment variable_name %}
 ```
 
 #### raw
 
-Syntax:
+语法：
 ```
 {% raw %}
-  expression
+  表达式
 {% endraw %}
 ```
 
 #### render
-Inside snippets and app blocks, you can't directly access variables that are [created](https://shopify.dev/docs/api/liquid/tags/variable-tags) outside
-of the snippet or app block. However, you can [specify variables as parameters](https://shopify.dev/docs/api/liquid/tags/render#render-passing-variables-to-a-snippet)
-to pass outside variables to snippets.
+在 snippets 和 app blocks 内部，您不能直接访问在 snippet 或 app block 外部 [创建](https://shopify.dev/docs/api/liquid/tags/variable-tags) 的变量。但是，您可以 [将变量指定为参数](https://shopify.dev/docs/api/liquid/tags/render#render-passing-variables-to-a-snippet)，以将外部变量传递给 snippets。
 
-While you can't directly access created variables, you can access global objects, as well as any objects that are
-directly accessible outside the snippet or app block. For example, a snippet or app block inside the [product template](/themes/architecture/templates/product)
-can access the [`product` object](https://shopify.dev/docs/api/liquid/objects/product), and a snippet or app block inside a [section](/themes/architecture/sections)
-can access the [`section` object](https://shopify.dev/docs/api/liquid/objects/section).
+虽然您不能直接访问创建的变量，但您可以访问全局对象，以及在 snippet 或 app block 外部可直接访问的任何对象。例如，[产品模板](/themes/architecture/templates/product) 内的 snippet 或 app block 可以访问 [`product` 对象](https://shopify.dev/docs/api/liquid/objects/product)，而 [section](/themes/architecture/sections) 内的 snippet 或 app block 可以访问 [`section` 对象](https://shopify.dev/docs/api/liquid/objects/section)。
 
-Outside a snippet or app block, you can't access variables created inside the snippet or app block.
+在 snippet 或 app block 外部，您不能访问在 snippet 或 app block 内部创建的变量。
 
-> Note:
-> When you render a snippet using the `render` tag, you can't use the [`include` tag](https://shopify.dev/docs/api/liquid/tags/include)
-> inside the snippet.
+> 注意：
+> 当您使用 `render` 标签渲染 snippet 时，不能在 snippet 内部使用 [`include` 标签](https://shopify.dev/docs/api/liquid/tags/include)。
 
 
-Syntax:
+语法：
 ```
 {% render 'filename' %}
 ```
 
 #### tablerow
-The `tablerow` tag must be wrapped in HTML `<table>` and `</table>` tags.
+`tablerow` 标签必须包裹在 HTML `<table>` 和 `</table>` 标签中。
 
-> Tip:
-> Every `tablerow` loop has an associated [`tablerowloop` object](https://shopify.dev/docs/api/liquid/objects/tablerowloop) with information about the loop.
+> 提示：
+> 每个 `tablerow` 循环都有一个关联的 [`tablerowloop` 对象](https://shopify.dev/docs/api/liquid/objects/tablerowloop)，其中包含有关循环的信息。
 
 
-Syntax:
+语法：
 ```
 {% tablerow variable in array %}
-  expression
+  表达式
 {% endtablerow %}
 ```
 
 #### unless
-> Tip:
-> Similar to the [`if` tag](https://shopify.dev/docs/api/liquid/tags/if), you can use `elsif` to add more conditions to an `unless` tag.
+> 提示：
+> 与 [`if` 标签](https://shopify.dev/docs/api/liquid/tags/if) 类似，您可以使用 `elsif` 为 `unless` 标签添加更多条件。
 
 
-Syntax:
+语法：
 ```
 {% unless condition %}
-  expression
+  表达式
 {% endunless %}
 ```
 
 #### paginate
-Because [`for` loops](https://shopify.dev/docs/api/liquid/tags/for) are limited to 50 iterations per page, you need to use the `paginate` tag to
-iterate over an array that has more than 50 items. The following arrays can be paginated:
+因为 [`for` 循环](https://shopify.dev/docs/api/liquid/tags/for) 每页限制为 50 次迭代，所以您需要使用 `paginate` 标签来迭代包含超过 50 个项目的数组。以下数组可以分页：
 
 - [`article.comments`](https://shopify.dev/docs/api/liquid/objects/article#article-comments)
 - [`blog.articles`](https://shopify.dev/docs/api/liquid/objects/blog#blog-articles)
@@ -880,20 +857,17 @@ iterate over an array that has more than 50 items. The following arrays can be p
 - [`pages`](https://shopify.dev/docs/api/liquid/objects/pages)
 - [`product.variants`](https://shopify.dev/docs/api/liquid/objects/product#variants)
 - [`search.results`](https://shopify.dev/docs/api/liquid/objects/search#search-results)
-- [`article_list` settings](/themes/architecture/settings/input-settings#article_list)
-- [`collection_list` settings](/themes/architecture/settings/input-settings#collection_list)
-- [`product_list` settings](/themes/architecture/settings/input-settings#product_list)
+- [`article_list` 设置](/themes/architecture/settings/input-settings#article_list)
+- [`collection_list` 设置](/themes/architecture/settings/input-settings#collection_list)
+- [`product_list` 设置](/themes/architecture/settings/input-settings#product_list)
 
-Within the `paginate` tag, you have access to the [`paginate` object](https://shopify.dev/docs/api/liquid/objects/paginate). You can use this
-object, or the [`default_pagination` filter](https://shopify.dev/docs/api/liquid/filters/default_pagination), to build page navigation.
+在 `paginate` 标签内，您可以访问 [`paginate` 对象](https://shopify.dev/docs/api/liquid/objects/paginate)。您可以使用此对象或 [`default_pagination` 过滤器](https://shopify.dev/docs/api/liquid/filters/default_pagination) 来构建页面导航。
 
-> Note:
-> The `paginate` tag allows the user to paginate to the 25,000th item in the array and no further. To reach items further in
-> the array the array should be filtered further before paginating. See
-> [Pagination Limits](/themes/best-practices/performance/platform#pagination-limits) for more information.
+> 注意：
+> `paginate` 标签允许用户分页到数组中的第 25,000 个项目，不能更远。要访问数组中更远的项目，应在分页之前进一步过滤数组。有关更多信息，请参阅 [分页限制](/themes/best-practices/performance/platform#pagination-limits)。
 
 
-Syntax:
+语法：
 ```
 {% paginate array by page_size %}
   {% for item in array %}
@@ -903,14 +877,14 @@ Syntax:
 ```
 
 #### javascript
-Each section, block or snippet can have only one `{% javascript %}` tag.
+每个 section、block 或 snippet 只能有一个 `{% javascript %}` 标签。
 
-To learn more about how JavaScript that's defined between the `javascript` tags is loaded and run, refer to the documentation for [javascript tags](/storefronts/themes/best-practices/javascript-and-stylesheet-tags#javascript).
-> Caution:
-> Liquid isn't rendered inside of `{% javascript %}` tags. Including Liquid code can cause syntax errors.
+要了解有关在 `javascript` 标签之间定义的 JavaScript 如何加载和运行的更多信息，请参阅 [javascript 标签](/storefronts/themes/best-practices/javascript-and-stylesheet-tags#javascript) 文档。
+> 注意：
+> Liquid 不会在 `{% javascript %}` 标签内渲染。包含 Liquid 代码可能会导致语法错误。
 
 
-Syntax:
+语法：
 ```
 {% javascript %}
   javascript_code
@@ -918,24 +892,23 @@ Syntax:
 ```
 
 #### section
-Rendering a section with the `section` tag renders a section statically. To learn more about sections and how to use
-them in your theme, refer to [Render a section](/themes/architecture/sections#render-a-section).
+使用 `section` 标签渲染 section 会静态地渲染一个 section。要了解有关 sections 以及如何在主题中使用它们的更多信息，请参阅 [渲染 section](/themes/architecture/sections#render-a-section)。
 
 
-Syntax:
+语法：
 ```
 {% section 'name' %}
 ```
 
 #### stylesheet
-Each section, block or snippet can have only one `{% stylesheet %}` tag.
+每个 section、block 或 snippet 只能有一个 `{% stylesheet %}` 标签。
 
-To learn more about how CSS that's defined between the `stylesheet` tags is loaded and run, refer to the documentation for [stylesheet tags](/storefronts/themes/best-practices/javascript-and-stylesheet-tags#stylesheet).
-> Caution:
-> Liquid isn't rendered inside of `{% stylesheet %}` tags. Including Liquid code can cause syntax errors.
+要了解有关在 `stylesheet` 标签之间定义的 CSS 如何加载和运行的更多信息，请参阅 [stylesheet 标签](/storefronts/themes/best-practices/javascript-and-stylesheet-tags#stylesheet) 文档。
+> 注意：
+> Liquid 不会在 `{% stylesheet %}` 标签内渲染。包含 Liquid 代码可能会导致语法错误。
 
 
-Syntax:
+语法：
 ```
 {% stylesheet %}
   css_styles
@@ -943,23 +916,22 @@ Syntax:
 ```
 
 #### sections
-Use this tag to render section groups as part of the theme's [layout](/themes/architecture/layouts) content. Place the `sections` tag where you want to render it in the layout.
+使用此标签将 section 组渲染为主题 [layout](/themes/architecture/layouts) 内容的一部分。将 `sections` 标签放在您希望在布局中渲染它的位置。
 
-To learn more about section groups and how to use them in your theme, refer to [Section groups](/themes/architecture/section-groups#usage).
+要了解有关 section 组以及如何在主题中使用它们的更多信息，请参阅 [Section 组](/themes/architecture/section-groups#usage)。
 
 
-Syntax:
+语法：
 ```
 {% sections 'name' %}
 ```
 
 #### style
-> Note:
-> If you reference [color settings](/themes/architecture/settings/input-settings#color) inside `style` tags, then
-> the associated CSS rules will update as the setting is changed in the theme editor, without a page refresh.
+> 注意：
+> 如果您在 `style` 标签内引用 [颜色设置](/themes/architecture/settings/input-settings#color)，则关联的 CSS 规则将随着主题编辑器中设置的更改而更新，无需刷新页面。
 
 
-Syntax:
+语法：
 ```
 {% style %}
   CSS_rules
@@ -967,22 +939,22 @@ Syntax:
 ```
 
 #### else
-You can use the `else` tag with the following tags:
+您可以将 `else` 标签与以下标签一起使用：
 
 - [`case`](https://shopify.dev/docs/api/liquid/tags/case)
 - [`if`](https://shopify.dev/docs/api/liquid/tags/if)
 - [`unless`](https://shopify.dev/docs/api/liquid/tags/unless)
 
 
-Syntax:
+语法：
 ```
 {% else %}
-  expression
+  表达式
 ```
 
 #### else
 
-Syntax:
+语法：
 ```
 {% for variable in array %}
   first_expression
@@ -992,137 +964,137 @@ Syntax:
 ```
 
 #### liquid
-Because the tags don't have delimeters, each tag needs to be on its own line.
+因为标签没有分隔符，所以每个标签需要单独占一行。
 
-> Tip:
-> Use the [`echo` tag](https://shopify.dev/docs/api/liquid/tags/echo) to output an expression inside `liquid` tags.
+> 提示：
+> 使用 [`echo` 标签](https://shopify.dev/docs/api/liquid/tags/echo) 在 `liquid` 标签内输出表达式。
 
 
-Syntax:
+语法：
 ```
 {% liquid
-  expression
+  表达式
 %}
 ```
 
 
-## Translation development standards
+## 翻译开发标准
 
-### Translation requirements
+### 翻译要求
 
-- **Every user-facing text** must use translation filters.
-- **Update `locales/en.default.json`** with all new keys.
-- **Use descriptive, hierarchical keys** for organization.
-- **Only add English text**; translators handle other languages.
+- **每个面向用户的文本**都必须使用翻译过滤器。
+- **更新 `locales/en.default.json`** 以包含所有新键。
+- **使用描述性的分层键**进行组织。
+- **只添加英文文本**；翻译人员处理其他语言。
 
-### Translation filter usage
+### 翻译过滤器用法
 
-**Use `{{ 'key' | t }}` for all text:**
+**对所有文本使用 `{{ 'key' | t }}`：**
 
 ```liquid
-<!-- Good -->
+<!-- 好 -->
 <h2>{{ 'sections.featured_collection.title' | t }}</h2>
 <p>{{ 'sections.featured_collection.description' | t }}</p>
 <button>{{ 'products.add_to_cart' | t }}</button>
 
-<!-- Bad -->
-<h2>Featured Collection</h2>
-<p>Check out our best products</p>
-<button>Add to cart</button>
+<!-- 不好 -->
+<h2>精选合集</h2>
+<p>查看我们最好的产品</p>
+<button>加入购物车</button>
 ```
 
-### Translation with variables
+### 带变量的翻译
 
-**Use variables for interpolation:**
+**使用变量进行插值：**
 
 ```liquid
-<!-- Liquid template -->
+<!-- Liquid 模板 -->
 <p>{{ 'products.price_range' | t: min: product.price_min | money, max: product.price_max | money }}</p>
 <p>{{ 'general.pagination.page' | t: page: paginate.current_page, pages: paginate.pages }}</p>
 ```
 
-**Corresponding keys in locale files:**
+**区域设置文件中的对应键：**
 
 ```json
 {
   "products": {
-    "price_range": "From {{ min }} to {{ max }}"
+    "price_range": "从 {{ min }} 到 {{ max }}"
   },
   "general": {
     "pagination": {
-      "page": "Page {{ page }} of {{ pages }}"
+      "page": "第 {{ page }} 页，共 {{ pages }} 页"
     }
   }
 }
 ```
 
-### Best practices
+### 最佳实践
 
-**Content guidelines:**
-- Write clear, concise text.
-- **Use sentence case** for all user-facing text, including titles, headings, and button labels (capitalize only the first word and proper nouns; e.g., `Featured collection` → `Featured collection`, not `Featured Collection`).
-- Be consistent with terminology.
-- Consider character limits for UI elements.
+**内容指南：**
+- 书写清晰、简洁的文本。
+- 对所有面向用户的文本使用**句首大写**，包括标题、标题和按钮标签（仅将第一个单词和专有名词大写；例如，`Featured collection` → `精选合集`，而不是 `精选合集`）。
+- 保持术语一致。
+- 考虑 UI 元素的字符限制。
 
-**Variable usage:**
-- Use interpolation rather than appending strings together.
-- Prioritize clarity over brevity for variable naming.
-- Escape variables unless they output HTML: `{{ variable | escape }}`.
+**变量用法：**
+- 使用插值而不是将字符串拼接在一起。
+- 变量命名优先考虑清晰度而不是简洁性。
+- 转义变量，除非它们输出 HTML：`{{ variable | escape }}`。
 
 
-## Localization standards
+## 本地化标准
 
-Auto-attached when working in `locales/` directory.
+在 `locales/` 目录中工作时自动附加。
 
-### File structure
+### 文件结构
 
 ```
 locales/
-├── en.default.json          # English (required)
-├── en.default.schema.json   # English (required)
-├── es.json                  # Spanish
-├── est.schema.json          # Spanish
-├── fr.json                  # French
-├── frt.schema.json          # French
-└── pt-BR.json               # Portuguese
-└── pt-BR..schema.json       # Portuguese
+├── en.default.json          # 英文（必需）
+├── en.default.schema.json   # 英文（必需）
+├── es.json                  # 西班牙语
+├── est.schema.json          # 西班牙语
+├── fr.json                  # 法语
+├── frt.schema.json          # 法语
+└── pt-BR.json               # 葡萄牙语
+└── pt-BR..schema.json       # 葡萄牙语
 ```
 
-#### Locale files
+#### 区域设置文件
 
-Locale files are JSON files containing translations for all the text strings used throughout a Shopify theme and its editor. They let merchants easily update and localize repeated words and phrases, making it possible to translate store content and settings into multiple languages for international customers. These files provide a centralized way to manage and edit translations.
+区域设置文件是 JSON 文件，包含整个 Shopify 主题及其编辑器中使用的所有文本字符串的翻译。它们让商家可以轻松更新和本地化重复的单词和短语，使得将店铺内容和设置翻译成多种语言以供国际客户使用成为可能。这些文件提供了一种集中管理和编辑翻译的方式。
 
-**Example:**
+**示例：**
 ```json
 {
   "general": {
-    "cart": "Cart",
-    "checkout": "Checkout"
+    "cart": "购物车",
+    "checkout": "结账"
   },
   "products": {
-    "add_to_cart": "Add to Cart"
+    "add_to_cart": "加入购物车"
   }
 }
 ```
 
-#### Schema locale files
+#### Schema 区域设置文件
 
-Schema locale files, saved with a .schema.json extension, store translation strings specifically for theme editor setting schemas. They follow a structured organization—category, group, and description—to give context to each translation, enabling accurate localization of editor content. Schema locale files must use the IETF language tag format in their naming, such as en-GB.schema.json for British English or fr-CA.schema.json for Canadian French.
+Schema 区域设置文件以 .schema.json 扩展名保存，专门存储主题编辑器设置 schema 的翻译字符串。它们遵循结构化的组织——类别、组和描述——为每个翻译提供上下文，从而实现编辑器内容的准确定位。Schema 区域设置文件在命名时必须使用 IETF 语言标签格式，例如 en-GB.schema.json 表示英式英语或 fr-CA.schema.json 表示加拿大法语。
 
-**Example:**
+**示例：**
 ```json
 {
   "products": {
     "card": {
-      "description": "Product card layout"
+      "description": "产品卡片布局"
     }
   }
 }
 ```
 
-### Key organization
+### 键组织
 
-**Hierarchical structure:**
+**分层结构：**
 ```json
 {
   "general": {
@@ -1131,61 +1103,59 @@ Schema locale files, saved with a .schema.json extension, store translation stri
       "description": "{{ shop_description }}"
     },
     "accessibility": {
-      "skip_to_content": "Skip to content",
-      "close": "Close"
+      "skip_to_content": "跳转到内容",
+      "close": "关闭"
     }
   },
   "products": {
-    "add_to_cart": "Add to cart",
-    "quick_view": "Quick view",
+    "add_to_cart": "加入购物车",
+    "quick_view": "快速查看",
     "price": {
-      "regular": "Regular price",
-      "sale": "Sale price",
-      "unit": "Unit price"
+      "regular": "常规价格",
+      "sale": "促销价",
+      "unit": "单价"
     }
   }
 }
 ```
-**Usage**
+**用法**
 ```liquid
 {{ 'general.meta.title' | t: shop_name: shop.name }}
 {{ 'general.meta.description' | t: shop_description: shop.description }}
 ```
 
-### Translation guidelines
+### 翻译指南
 
-**Key naming:**
-- Use descriptive, hierarchical keys
-- Maximum 3 levels deep
-- Use snake_case for key names
-- Group related translations
+**键命名：**
+- 使用描述性的分层键
+- 最多 3 层深度
+- 键名使用 snake_case
+- 对相关翻译进行分组
 
-**Content rules:**
-- Keep text concise for UI elements
-- Use variables for dynamic content
-- Consider character limits
-- Maintain consistent terminology
+**内容规则：**
+- 保持 UI 元素的文本简洁
+- 对动态内容使用变量
+- 考虑字符限制
+- 保持一致的术语
 
-## Examples per kind of asset
+## 每种资产类型的示例
 
 ### `snippet`
 
 ```liquid
 {% doc %}
-  Renders a responsive image that might be wrapped in a link.
+  渲染一个可能被链接包裹的响应式图片。
 
-  When `width`, `height` and `crop` are provided, the image will be rendered
-  with a fixed aspect ratio.
+  当提供 `width`、`height` 和 `crop` 时，图片将以固定的宽高比渲染。
 
-  Serves as an example of how to use the `image_url` filter and `image_tag` filter
-  as well as how you can use LiquidDoc to document your code.
+  作为如何使用 `image_url` 过滤器和 `image_tag` 过滤器以及如何使用 LiquidDoc 记录代码的示例。
 
-  @param {image} image - The image to be rendered
-  @param {string} [url] - An optional destination URL for the image
-  @param {string} [css_class] - Optional class to be added to the image wrapper
-  @param {number} [width] - The highest resolution width of the image to be rendered
-  @param {number} [height] - The highest resolution height of the image to be rendered
-  @param {string} [crop] - The crop position of the image
+  @param {image} image - 要渲染的图片
+  @param {string} [url] - 图片的可选目标 URL
+  @param {string} [css_class] - 要添加到图片包装器的可选类
+  @param {number} [width] - 要渲染的图片的最高分辨率宽度
+  @param {number} [height] - 要渲染的图片的最高分辨率高度
+  @param {string} [crop] - 图片的裁剪位置
 
   @example
   {% render 'image', image: product.featured_image %}
@@ -1238,7 +1208,7 @@ Schema locale files, saved with a .schema.json extension, store translation stri
 
 {% javascript %}
   function doSomething() {
-    // example
+    // 示例
   }
   doSomething()
 {% endjavascript %}
@@ -1247,11 +1217,11 @@ Schema locale files, saved with a .schema.json extension, store translation stri
 
 ### `block`
 
-#### Text
+#### 文本
 
 ```liquid
 {% doc %}
-  Renders a text block.
+  渲染一个文本 block。
 
   @example
   {% content_for 'block', type: 'text', id: 'text' %}
@@ -1286,7 +1256,7 @@ Schema locale files, saved with a .schema.json extension, store translation stri
       "type": "text",
       "id": "text",
       "label": "t:labels.text",
-      "default": "Text"
+      "default": "文本"
     },
     {
       "type": "select",
@@ -1311,17 +1281,15 @@ Schema locale files, saved with a .schema.json extension, store translation stri
 {% endschema %}
 ```
 
-#### Group
+#### 组
 
 ```liquid
 {% doc %}
-  Renders a group of blocks with configurable layout direction, gap and
-  alignment.
+  渲染一组 blocks，具有可配置的布局方向、间距和对齐方式。
 
-  All settings apply to only one dimension to reduce configuration complexity.
+  所有设置仅应用于一个维度，以降低配置复杂性。
 
-  This component is a wrapper concerned only with rendering its children in
-  the specified layout direction with appropriate padding and alignment.
+  此组件是一个包装器，仅关注以指定的布局方向渲染其子元素，并具有适当的内边距和对齐方式。
 
   @example
   {% content_for 'block', type: 'group', id: 'group' %}
@@ -1484,4 +1452,3 @@ Schema locale files, saved with a .schema.json extension, store translation stri
 }
 {% endschema %}
 ```
-

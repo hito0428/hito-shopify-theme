@@ -2,87 +2,87 @@
   <br>
     <img src="./assets/shoppy-x-ray.svg" alt="logo" width="200">
   <br>
-  Shopify Skeleton Theme
+  Shopify Skeleton 主题
 </h1>
 
-A minimal, carefully structured Shopify theme designed to help you quickly get started. Designed with modularity, maintainability, and Shopify's best practices in mind.
+一个精心构建的极简 Shopify 主题，旨在帮助您快速上手。设计时考虑了模块化、可维护性和 Shopify 的最佳实践。
 
 <p align="center">
   <a href="./LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
   <a href="./actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Shopify/skeleton-theme/actions/workflows/ci.yml/badge.svg"></a>
 </p>
 
-## Getting started
+## 快速开始
 
-### Prerequisites
+### 前置条件
 
-Before starting, ensure you have the latest Shopify CLI installed:
+在开始之前，请确保您已安装最新的 Shopify CLI：
 
-- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) – helps you download, upload, preview themes, and streamline your workflows
+- [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) — 帮助您下载、上传、预览主题并简化您的工作流程
 
-If you use VS Code:
+如果您使用 VS Code：
 
-- [Shopify Liquid VS Code Extension](https://shopify.dev/docs/storefronts/themes/tools/shopify-liquid-vscode) – provides syntax highlighting, linting, inline documentation, and auto-completion specifically designed for Liquid templates
+- [Shopify Liquid VS Code 扩展](https://shopify.dev/docs/storefronts/themes/tools/shopify-liquid-vscode) — 提供专门为 Liquid 模板设计的语法高亮、代码检查、内联文档和自动补全
 
-### Clone
+### 克隆
 
-Clone this repository using Git or Shopify CLI:
+使用 Git 或 Shopify CLI 克隆此仓库：
 
 ```bash
 git clone git@github.com:Shopify/skeleton-theme.git
-# or
+# 或者
 shopify theme init
 ```
 
-### Preview
+### 预览
 
-Preview this theme using Shopify CLI:
+使用 Shopify CLI 预览此主题：
 
 ```bash
 shopify theme dev
 ```
 
-## Theme architecture
+## 主题架构
 
 ```bash
 .
-├── assets          # Stores static assets (CSS, JS, images, fonts, etc.)
-├── blocks          # Reusable, nestable, customizable UI components
-├── config          # Global theme settings and customization options
-├── layout          # Top-level wrappers for pages (layout templates)
-├── locales         # Translation files for theme internationalization
-├── sections        # Modular full-width page components
-├── snippets        # Reusable Liquid code or HTML fragments
-└── templates       # Templates combining sections to define page structures
+├── assets          # 存储静态资源（CSS、JS、图片、字体等）
+├── blocks          # 可复用、可嵌套、可自定义的 UI 组件
+├── config          # 全局主题设置和自定义选项
+├── layout          # 页面的顶层包装器（布局模板）
+├── locales         # 主题国际化的翻译文件
+├── sections        # 模块化的全宽页面组件
+├── snippets        # 可复用的 Liquid 代码或 HTML 片段
+└── templates       # 组合 sections 以定义页面结构的模板
 ```
 
-To learn more, refer to the [theme architecture documentation](https://shopify.dev/docs/storefronts/themes/architecture).
+了解更多，请参阅 [主题架构文档](https://shopify.dev/docs/storefronts/themes/architecture)。
 
-### Templates
+### 模板
 
-[Templates](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) control what's rendered on each type of page in a theme.
+[模板](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types)控制主题中每种类型页面上呈现的内容。
 
-The Skeleton Theme scaffolds [JSON templates](https://shopify.dev/docs/storefronts/themes/architecture/templates/json-templates) to make it easy for merchants to customize their store.
+Skeleton 主题搭建了 [JSON 模板](https://shopify.dev/docs/storefronts/themes/architecture/templates/json-templates)，让商家可以轻松自定义他们的店铺。
 
-None of the template types are required, and not all of them are included in the Skeleton Theme. Refer to the [template types reference](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types) for a full list.
+没有任何模板类型是必需的，并且并非所有模板类型都包含在 Skeleton 主题中。完整列表请参阅 [模板类型参考](https://shopify.dev/docs/storefronts/themes/architecture/templates#template-types)。
 
 ### Sections
 
-[Sections](https://shopify.dev/docs/storefronts/themes/architecture/sections) are Liquid files that allow you to create reusable modules of content that can be customized by merchants. They can also include blocks which allow merchants to add, remove, and reorder content within a section.
+[Sections](https://shopify.dev/docs/storefronts/themes/architecture/sections) 是允许您创建可被商家自定义的可复用内容模块的 Liquid 文件。它们还可以包含 blocks，允许商家在 section 内添加、删除和重新排序内容。
 
-Sections are made customizable by including a `{% schema %}` in the body. For more information, refer to the [section schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/sections/section-schema).
+Sections 通过在正文中包含 `{% schema %}` 来实现可定制。了解更多，请参阅 [section schema 文档](https://shopify.dev/docs/storefronts/themes/architecture/sections/section-schema)。
 
 ### Blocks
 
-[Blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks) let developers create flexible layouts by breaking down sections into smaller, reusable pieces of Liquid. Each block has its own set of settings, and can be added, removed, and reordered within a section.
+[Blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks) 让开发人员通过将 sections 分解成更小的、可复用的 Liquid 片段来创建灵活的布局。每个 block 都有自己的一组设置，并且可以在 section 内添加、删除和重新排序。
 
-Blocks are made customizable by including a `{% schema %}` in the body. For more information, refer to the [block schema documentation](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/schema).
+Blocks 通过在正文中包含 `{% schema %}` 来实现可定制。了解更多，请参阅 [block schema 文档](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/schema)。
 
 ## Schemas
 
-When developing components defined by schema settings, we recommend these guidelines to simplify your code:
+在开发由 schema 设置定义的组件时，我们建议遵循以下指南来简化您的代码：
 
-- **Single property settings**: For settings that correspond to a single CSS property, use CSS variables:
+- **单属性设置**：对于对应单个 CSS 属性的设置，请使用 CSS 变量：
 
   ```liquid
   <div class="collection" style="--gap: {{ block.settings.gap }}px">
@@ -110,7 +110,7 @@ When developing components defined by schema settings, we recommend these guidel
   {% endschema %}
   ```
 
-- **Multiple property settings**: For settings that control multiple CSS properties, use CSS classes:
+- **多属性设置**：对于控制多个 CSS 属性的设置，请使用 CSS 类：
 
   ```liquid
   <div class="collection {{ block.settings.layout }}">
@@ -119,10 +119,10 @@ When developing components defined by schema settings, we recommend these guidel
 
   {% stylesheet %}
     .collection--full-width {
-      /* multiple styles */
+      /* 多个样式 */
     }
     .collection--narrow {
-      /* multiple styles */
+      /* 多个样式 */
     }
   {% endstylesheet %}
 
@@ -143,18 +143,18 @@ When developing components defined by schema settings, we recommend these guidel
 
 ## CSS & JavaScript
 
-For CSS and JavaScript, we recommend using the [`{% stylesheet %}`](https://shopify.dev/docs/api/liquid/tags#stylesheet) and [`{% javascript %}`](https://shopify.dev/docs/api/liquid/tags/javascript) tags. They can be included multiple times, but the code will only appear once.
+对于 CSS 和 JavaScript，我们建议使用 [`{% stylesheet %}`](https://shopify.dev/docs/api/liquid/tags#stylesheet) 和 [`{% javascript %}`](https://shopify.dev/docs/api/liquid/tags/javascript) 标签。它们可以被包含多次，但代码只会出现一次。
 
 ### `critical.css`
 
-The Skeleton Theme explicitly separates essential CSS necessary for every page into a dedicated `critical.css` file.
+Skeleton 主题明确地将每个页面必需的核心 CSS 分离到一个专用的 `critical.css` 文件中。
 
-## Contributing
+## 贡献
 
-We're excited for your contributions to the Skeleton Theme! This repository aims to remain as lean, lightweight, and fundamental as possible, and we kindly ask your contributions to align with this intention.
+我们很高兴您为 Skeleton 主题做出贡献！此仓库旨在保持尽可能精简、轻量和基础，我们恳请您的贡献与此意图保持一致。
 
-Visit our [CONTRIBUTING.md](./CONTRIBUTING.md) for a detailed overview of our process, guidelines, and recommendations.
+请访问我们的 [CONTRIBUTING.md](./CONTRIBUTING.md) 了解我们的流程、指南和建议的详细概述。
 
-## License
+## 许可证
 
-Skeleton Theme is open-sourced under the [MIT](./LICENSE.md) License.
+Skeleton 主题在 [MIT](./LICENSE.md) 许可证下开源。

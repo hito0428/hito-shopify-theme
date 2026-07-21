@@ -1,24 +1,24 @@
-# Contributing to Skeleton Theme
+# 为 Skeleton 主题做贡献
 
-## How to contribute
+## 如何贡献
 
-We ❤️ pull requests. If you'd like to fix a bug, contribute a feature, or just correct a typo, feel free to do so, as long as you follow our [Code of Conduct](./CODE_OF_CONDUCT.md).
+我们 ❤️ 拉取请求。如果您想修复错误、贡献功能或只是纠正拼写错误，只要您遵循我们的 [行为准则](./CODE_OF_CONDUCT.md)，请随时这样做。
 
-If you're thinking of adding a new feature or proposing a new pattern across the theme, please consider opening an issue first. This will allow us to discuss your idea, ensure it aligns with the project's direction, and potentially save you some time.
+如果您打算添加新功能或提出跨主题的新模式，请考虑先打开一个 issue。这将使我们能够讨论您的想法，确保它与项目方向一致，并可能为您节省一些时间。
 
-For your contribution to be accepted, you'll need to sign the [Shopify Contributor License Agreement (CLA)](https://cla.shopify.com/).
+为了让您的贡献被接受，您需要签署 [Shopify 贡献者许可协议 (CLA)](https://cla.shopify.com/)。
 
-## Standards
+## 标准
 
-* This codebase must be minimalist, not a fully featured theme.
-* This theme must provide a common foundational starting point for most developers.
-* Do not include or reference legacy or non-recommended features.
-* All changes must preserve the principles defined in the README.
+* 此代码库必须是极简的，而不是一个功能完整的主题。
+* 此主题必须为大多数开发人员提供一个共同的基础起点。
+* 不要包含或引用遗留或不推荐的功能。
+* 所有更改必须保留 README 中定义的原则。
 
-## Steps to contribute
+## 贡献步骤
 
-1. Fork the repository: [https://github.com/Shopify/skeleton-theme/fork](https://github.com/Shopify/skeleton-theme/fork)
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to your branch: `git push origin my-new-feature`
-5. Create a new Pull Request
+1. Fork 这个仓库：[https://github.com/Shopify/skeleton-theme/fork](https://github.com/Shopify/skeleton-theme/fork)
+2. 创建您的功能分支：`git checkout -b my-new-feature`
+3. 提交您的更改：`git commit -am 'Add some feature'`
+4. 推送到您的分支：`git push origin my-new-feature`
+5. 创建一个新的拉取请求

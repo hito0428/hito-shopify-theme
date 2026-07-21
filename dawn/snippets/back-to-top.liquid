@@ -1,0 +1,140 @@
+{% comment %}
+  回到顶部按钮 - 黑色圆形按钮，固定在可视窗口右下角
+  当用户向下滚动超过 300px 时显示，点击后平滑滚动到页面顶部
+{% endcomment %}
+
+<button
+  type="button"
+  class="back-to-top"
+  aria-label="{{ 'general.accessibility.back_to_top' | t }}"
+  hidden
+>
+  <svg
+    class="back-to-top__icon"
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M10 4.167L3.333 10.833l1.175 1.175L9.167 7.35v8.482h1.666V7.35l4.659 4.658 1.175-1.175z" fill="currentColor"/>
+  </svg>
+</button>
+
+{% stylesheet %}
+  .back-to-top {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #000000;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(1rem);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease, background-color 0.2s ease;
+  }
+
+  .back-to-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .back-to-top:hover,
+  .back-to-top:focus-visible {
+    background-color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .back-to-top:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  .back-to-top:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  .back-to-top__icon {
+    flex-shrink: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .back-to-top {
+      width: 4rem;
+      height: 4rem;
+      right: 1.5rem;
+      bottom: 1.5rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .back-to-top,
+    .back-to-top:hover,
+    .back-to-top:focus-visible,
+    .back-to-top:active {
+      transition: none;
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function initBackToTop() {
+      var button = document.querySelector('.back-to-top');
+      if (!button) return;
+
+      var SCROLL_THRESHOLD = 300;
+
+      function toggleVisibility() {
+        if (window.scrollY > SCROLL_THRESHOLD) {
+          button.classList.add('is-visible');
+          button.hidden = false;
+        } else {
+          button.classList.remove('is-visible');
+          // Wait for the transition to finish before hiding
+          button.addEventListener('transitionend', function handler() {
+            button.hidden = true;
+            button.removeEventListener('transitionend', handler);
+          });
+        }
+      }
+
+      function scrollToTop() {
+        var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({
+          top: 0,
+          behavior: prefersReducedMotion ? 'auto' : 'smooth'
+        });
+      }
+
+      button.addEventListener('click', scrollToTop);
+      window.addEventListener('scroll', toggleVisibility, { passive: true });
+      window.addEventListener('resize', toggleVisibility, { passive: true });
+
+      toggleVisibility();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBackToTop);
+    } else {
+      initBackToTop();
+    }
+  })();
+{% endjavascript %}
