@@ -35,14 +35,16 @@
         "heading",
         "button"
       ],
+      "custom_css": [],
       "settings": {
+        "image": "shopify://shop_images/28.jpg",
         "image_overlay_opacity": 40,
-        "image_height": "large",
-        "image_behavior": "none",
+        "image_height": "medium",
+        "image_behavior": "ambient",
         "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
         "show_text_box": false,
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-1",
         "stack_images_on_mobile": false,
         "mobile_content_alignment": "center",
         "show_text_below": false
