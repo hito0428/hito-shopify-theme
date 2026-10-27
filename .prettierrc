@@ -1,0 +1,15 @@
+{
+  "printWidth": 9999,
+  "overrides": [
+    {
+      "files": ["*.liquid"],
+      "options": {
+        "printWidth": 99999,
+        "tabWidth": 2,
+        "useTabs": false,
+        "semi": true,
+        "singleQuote": false
+      }
+    }
+  ]
+}

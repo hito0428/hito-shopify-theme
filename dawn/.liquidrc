@@ -1,0 +1,16 @@
+{
+  "format": {
+    "enable": false,
+    "ignore": [
+      "layout/theme.liquid",
+      "layout/password.liquid"
+    ],
+    "wrap": 0,
+    "endNewline": false,
+    "liquid": {},
+    "markup": {},
+    "json": {},
+    "style": {},
+    "script": {}
+  }
+}

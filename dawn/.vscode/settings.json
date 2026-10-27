@@ -1,0 +1,19 @@
+{
+  "editor.formatOnSave": false,
+  "editor.formatOnType": false,
+  "editor.formatOnPaste": false,
+  "[liquid]": {
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+    "editor.formatOnPaste": false,
+    "editor.defaultFormatter": null
+  },
+  "liquid.format.enable": false,
+  "liquid.format.ignore": [
+    "layout/theme.liquid",
+    "layout/password.liquid"
+  ],
+  "liquid.format.rules": {
+    "wrap": 0
+  }
+}

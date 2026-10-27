@@ -54,6 +54,31 @@
           "settings": {
             "share_label": "Share"
           }
+        },
+        "rating_nhHP9r": {
+          "type": "rating",
+          "settings": {}
+        },
+        "collapsible_tab_mEB8EN": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Sizing Suggestions",
+            "icon": "ruler",
+            "content": "<p>Sizing Suggestions</p>",
+            "page": ""
+          }
+        },
+        "icon_with_text_6xj9bR": {
+          "type": "icon-with-text",
+          "settings": {
+            "layout": "horizontal",
+            "icon_1": "heart",
+            "heading_1": "Heading",
+            "icon_2": "return",
+            "heading_2": "Heading",
+            "icon_3": "truck",
+            "heading_3": "Heading"
+          }
         }
       },
       "block_order": [
@@ -64,7 +89,10 @@
         "quantity_selector",
         "buy_buttons",
         "description",
-        "share"
+        "share",
+        "rating_nhHP9r",
+        "collapsible_tab_mEB8EN",
+        "icon_with_text_6xj9bR"
       ],
       "settings": {
         "enable_sticky_info": true,
@@ -85,6 +113,10 @@
     "disclosures": {
       "type": "disclosures",
       "settings": {
+        "heading": "{{ product.metafields.test_data.snowboard_length | metafield_text }}Disclosures",
+        "heading_size": "h2",
+        "open_by_default": false,
+        "color_scheme": "",
         "padding_top": 36,
         "padding_bottom": 0
       }
