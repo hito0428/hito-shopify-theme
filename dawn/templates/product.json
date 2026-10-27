@@ -27,6 +27,14 @@
           "type": "price",
           "settings": {}
         },
+        "inventory_UX8mK7": {
+          "type": "inventory",
+          "settings": {
+            "text_style": "body",
+            "inventory_threshold": 10,
+            "show_inventory_quantity": true
+          }
+        },
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
@@ -59,6 +67,15 @@
           "type": "rating",
           "settings": {}
         },
+        "collapsible_tab_erEPfr": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Collapsible row",
+            "icon": "check_mark",
+            "content": "<h2>Product Overview</h2><p><br/>&nbsp; &nbsp; &nbsp; Designed for cold, wet weather, the <strong>ECCO Glacia women's waterproof winter boots (model 243313)</strong>, available in Black and Green, combine premium ECCO suede leather with a cosy fold-over collar and a warm synthetic lining. They feature an ECCO waterproof membrane to help keep feet dry in wet winter conditions. Underfoot, ECCO FLUIDFORM™ Direct Comfort Technology provides flexible cushioning, while the patterned rubber outsole offers dependable grip on wet pavements and other cold-weather surfaces, making them a practical choice for everyday winter wear.<br/>&nbsp; &nbsp;&nbsp;</p><h2>Product Details</h2><p>Brand<a href=\"/collections/ecco\" target=\"_blank\" title=\"Premium ECCO shoes for all-day wear\">ECCO</a>Style Women's Waterproof Suede Winter BootsUpper Material Premium ECCO Suede LeatherLining Material Warm Synthetic LiningSole Rubber Outsole with Winter Traction PatternFastening Pull-OnColour Black, GreenDesign Mid-Cut Winter Boot with Cosy Fold-Over CollarSeason WinterManufacturer Code 243313Key Features & Technology ECCO Waterproof Membrane, Warm Lining, ECCO FLUIDFORM™ Direct Comfort Technology, Winter Traction Outsole</p>",
+            "page": ""
+          }
+        },
         "collapsible_tab_mEB8EN": {
           "type": "collapsible_tab",
           "settings": {
@@ -85,12 +102,14 @@
         "vendor",
         "title",
         "price",
+        "inventory_UX8mK7",
         "variant_picker",
         "quantity_selector",
         "buy_buttons",
         "description",
         "share",
         "rating_nhHP9r",
+        "collapsible_tab_erEPfr",
         "collapsible_tab_mEB8EN",
         "icon_with_text_6xj9bR"
       ],
@@ -113,7 +132,7 @@
     "disclosures": {
       "type": "disclosures",
       "settings": {
-        "heading": "{{ product.metafields.test_data.snowboard_length | metafield_text }}Disclosures",
+        "heading": "Disclosures",
         "heading_size": "h2",
         "open_by_default": false,
         "color_scheme": "",
@@ -130,7 +149,7 @@
         "columns_desktop": 4,
         "columns_mobile": "2",
         "color_scheme": "scheme-1",
-        "image_ratio": "square",
+        "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,

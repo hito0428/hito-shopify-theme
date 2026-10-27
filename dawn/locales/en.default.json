@@ -284,7 +284,6 @@
       "announcement": "Announcement",
       "announcement_bar": "Announcement bar"
     },
-
     "header": {
       "announcement": "Announcement",
       "menu": "Menu",
@@ -404,7 +403,6 @@
       "view_addresses": "View addresses",
       "return": "Return to Account details"
     },
-    "account_fallback": "Account",
     "activate_account": {
       "title": "Activate account",
       "subtext": "Create your password to activate your account.",
